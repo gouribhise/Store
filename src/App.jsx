@@ -1,4 +1,6 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {
   HomeLayout,
   Landing,
@@ -24,6 +26,15 @@ import { action as checkoutAction } from './components/CheckoutForm';
 import { loader as ordersLoader } from './pages/Orders';
 import { store } from './store';
 
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+    },
+  },
+}); 
+
  const router = createBrowserRouter([
   {
     path: '/',
@@ -33,19 +44,19 @@ import { store } from './store';
       {
         index: true,
         element: <Landing />,
-        loader: landingLoader,
+        loader: landingLoader(queryClient),
         errorElement: ErrorElement,
       },
       {
         path: 'products',
         element: <Products />,
-        loader:productsLoader,
+        loader:productsLoader(queryClient),
         errorElement:ErrorElement
       },
       {
         path: 'products/:id',
         element: <SingleProduct />,
-        loader:SingleProductLoader,
+        loader:SingleProductLoader(queryClient),
         errorElement:ErrorElement
       },
       {
@@ -57,13 +68,13 @@ import { store } from './store';
         path: 'checkout',
         element: <Checkout />,
         loader: checkoutLoader(store),
-        action: checkoutAction(store),
+        action: checkoutAction(store,queryClient),
       },
       {
         path: 'orders',
         element: <Orders />,
         element: <Orders />,
-        loader: ordersLoader(store)
+        loader: ordersLoader(store,queryClient)
       },
     ],
   },
@@ -82,6 +93,11 @@ import { store } from './store';
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return <QueryClientProvider client={queryClient}>
+  <RouterProvider router={router} />
+  <ReactQueryDevtools initialIsOpen={false}/>
+
+  </QueryClientProvider>
+  
 };
 export default App;
