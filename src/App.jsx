@@ -73,7 +73,7 @@ const queryClient = new QueryClient({
       {
         path: 'orders',
         element: <Orders />,
-        element: <Orders />,
+    
         loader: ordersLoader(store,queryClient)
       },
     ],
