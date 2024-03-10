@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const productionUrl = import.meta.env.VITE_APP_URL
-console.log('productionurl:',productionUrl)
+const productionUrl = ' https://strapi-store-server.onrender.com/api';
 
 export const customFetch=axios.create({
     baseURL:productionUrl,
