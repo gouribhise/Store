@@ -72,7 +72,7 @@ const Login = () => {
   onClick={loginAsGuestUser}
 >
   guest user
-</button>;p
+</button>
         <p className='text-center'>
           Not a member yet?
           <Link
